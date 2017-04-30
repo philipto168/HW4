@@ -46,7 +46,7 @@ This is an example of static chart.  It does not provide any interactivity.  The
 
 ---
 
-### Magnified View Possible On The Web App
+## Magnified View Possible On The Web App
 
 * This is an example of a zoomed in chart after the user selected a subset of data points.
 
