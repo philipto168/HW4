@@ -1,0 +1,112 @@
+---
+title       : Developing Data Products Homework 4
+subtitle    : Homework presentation using slidify
+author      : Philip To
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+```{r setup, include=FALSE, fig.width = 10, fig.height = 4, fig.align = "center"} 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warnings = FALSE) 
+library(ggplot2)
+library(lubridate)
+library(reshape2)
+
+```
+
+## Introduction
+
+* This web app was developed using R Shiny package and hosted online on shinyapps.io.
+* To get access to the web app, please visit the following: 
+https://philipto.shinyapps.io/hw4_app/
+
+--- .class #id 
+
+
+## Features
+
+* The web app allows the user to perform the following functions:
+
+(1) Change the title of the chart; 
+
+(2) Select which card to plot the CPU measurements; 
+
+(3) Change the position of the legend; 
+
+(4) Zoom into selected data points for better view.
+
+(5) Computes the average CPU measurement for the selected data range.
+
+---
+
+## Charts With No Interactivities
+
+This is an example of static chart.  It does not provide any interactivity.  The usefulness of such chart is very limited.
+
+```{r, echo=FALSE, results="hide"} 
+  
+  tmp_df <- read.csv("Avg_CPU.csv")
+    tmp_df$Time <- parse_date_time(tmp_df$Time,c( "mdyHMS", "ymdHMS"), tz = "EST")
+
+    tmp_df2 <- melt(tmp_df, measure.vars=names(tmp_df)[2:ncol(tmp_df)])
+    names(tmp_df2)[2] <- "CPU"
+    
+    main_title <- "CPU Measurement"
+    
+    ggplot(data=tmp_df2,aes_string(x = "Time", y = "value")) + geom_line(aes_string(color="CPU")) + 
+      #scale_y_continuous(name="CPU",labels = scales::comma) +
+      ggtitle(main_title) + theme(
+        axis.text.y = element_text(colour = "black"),
+        axis.title=element_text(face="bold",colour="brown"),
+        plot.title = element_text(color="brown", face="bold", size=18, hjust=0.5),
+        legend.position="top",
+        legend.title = element_text(color = "black"),
+        legend.text =  element_text(color = "black")
+      )
+
+    
+   
+
+```
+
+---
+
+### Magnified View Possible On The Web App
+
+* This is an example of a zoomed in chart after the user selected a subset of data points.
+
+```{r, echo=FALSE, results="hide"} 
+  
+  tmp_df <- read.csv("Avg_CPU2.csv")
+    tmp_df$Time <- parse_date_time(tmp_df$Time,c( "mdyHMS", "ymdHMS"), tz = "EST")
+
+    tmp_df2 <- melt(tmp_df, measure.vars=names(tmp_df)[2:ncol(tmp_df)])
+    names(tmp_df2)[2] <- "CPU"
+    
+    main_title <- "Magnified View"
+    
+    ggplot(data=tmp_df2,aes_string(x = "Time", y = "value")) + geom_line(aes_string(color="CPU")) + 
+      #scale_y_continuous(name="CPU",labels = scales::comma) +
+      ggtitle(main_title) + theme(
+        axis.text.y = element_text(colour = "black"),
+        axis.title=element_text(face="bold",colour="brown"),
+        plot.title = element_text(color="brown", face="bold", size=18, hjust=0.5),
+        legend.position="top",
+        legend.title = element_text(color = "black"),
+        legend.text =  element_text(color = "black")
+      )
+
+    
+   
+
+```
+
+
+
+
+
